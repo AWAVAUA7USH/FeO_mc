@@ -1,2 +1,2 @@
 # FeO_mc
-A Fucking Fast Minecraft Server written in RUST
+A Fucking Fast Shitty Minecraft Server written in RUST
