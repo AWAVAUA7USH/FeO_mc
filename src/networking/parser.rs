@@ -59,7 +59,7 @@ pub fn read_varlong(data: &[u8]) -> Result<(i64, usize), ParserError>{
     return Err(ParserError::BufferTooShort);
 }
 
-pub fn write_varint(number: i64) -> Result<Vec<u8>, ParserError > {
+pub fn write_varlong(number: i64) -> Result<Vec<u8>, ParserError > {
     let mut val = number as u64;
     let mut buffer = Vec::new();
 
