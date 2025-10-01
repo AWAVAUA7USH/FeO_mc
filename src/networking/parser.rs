@@ -4,13 +4,12 @@ enum ParserError {
 }
 
 pub fn read_varint(data: &[u8]) -> Result<(i32, usize), ParserError>{
-    let mut result: i32 = 0;
-    let mut shift: u32 = 0;
-    let mut index: usize = 0;
     if data.len() > 5 {
         return Err(ParserError::BufferTooLong);
     }
-    for &byte in data.iter(){
+    let mut result: i32 = 0;
+    let mut shift: u32 = 0;
+    for (i,&byte) in data.iter().enumerate(){
         result |= ((byte & 0b0111_1111) as i32) << shift;
         shift += 7;
         index += 1;
@@ -22,17 +21,16 @@ pub fn read_varint(data: &[u8]) -> Result<(i32, usize), ParserError>{
 }
 
 pub fn write_varint(number: i32) -> Result<Vec<u8>, ParserError > {
-    let mut val = number as u32;
     let mut buffer = Vec::new();
 
     loop {
-        let mut byte = (val & 0x7F) as u8; 
-        val >>= 7;
-        if val != 0 {
+        let mut byte = (number & 0x7F) as u8; 
+        number >>= 7;
+        if number != 0 {
             byte |= 0x80;
         }
         buffer.push(byte);
-        if val == 0 {
+        if number == 0 {
             break;
         }
     }
