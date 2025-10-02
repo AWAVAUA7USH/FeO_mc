@@ -34,16 +34,13 @@ impl Div for VarLong {
 }
 
 impl VarLong{
-    pub fn new(value: i64) -> Self{
+    pub fn from_i64(value: i64) -> Self{
         VarLong(value)
     }
-    pub fn value(&self) -> i64 {
+    pub fn to_i64(&self) -> i64 {
         self.0
     }
-    pub fn set(&mut self, value: i64) {
-        self.0 = value
-    }
-    pub fn parse(data: &[u8]) -> Result<(Self, usize), ParserError>{
+    pub fn from_bytes(data: &[u8]) -> Result<(Self, usize), ParserError>{
         if data.len() > 10 {
         return Err(ParserError::BufferTooLong);
         }
@@ -58,7 +55,7 @@ impl VarLong{
         }
         return Err(ParserError::BufferTooShort);
     }
-    pub fn encode(mut number: i64) -> Vec<u8>{
+    pub fn i64_to_bytes(mut number: i64) -> Vec<u8>{
         let mut buffer = Vec::new();
         loop {
             let mut byte = (number & 0x7f) as u8;
@@ -72,6 +69,9 @@ impl VarLong{
             }
         }
         buffer
+    }
+    pub fn to_bytes(&self) -> Vec<u8>{
+        Self::i64_to_bytes(self.0)
     }
 
 }

@@ -1,7 +1,7 @@
 use std::ops::{Add, Sub, Mul, Div};
 use super::super::errors::ParserError;
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Clone)]
-pub struct VarInt(pub i32);
+pub struct VarInt(i32);
 impl Add for VarInt {
     type Output = Self;
     fn add(self, other: Self) -> Self {
@@ -27,16 +27,13 @@ impl Div for VarInt {
     }
 }
 impl VarInt{
-    pub fn new(value: i32) -> Self{
+    pub fn from_i32(value: i32) -> Self{
         VarInt(value)
     }
-    pub fn value(&self) -> i32 {
+    pub fn to_i32(&self) -> i32 {
         self.0
     }
-    pub fn set(&mut self, value: i32) {
-        self.0 = value
-    }
-    pub fn parse(data: &[u8]) -> Result<(Self, usize), ParserError>{
+    pub fn from_bytes(data: &[u8]) -> Result<(Self, usize), ParserError>{
         if data.len() > 5 {
         return Err(ParserError::BufferTooLong);
         }
@@ -51,7 +48,7 @@ impl VarInt{
         }
         return Err(ParserError::BufferTooShort);
     }
-    pub fn encode(mut number: i32) -> Vec<u8>{
+    pub fn i32_to_bytes(mut number: i32) -> Vec<u8>{
         let mut buffer = Vec::new();
         loop {
             let mut byte = (number & 0x7f) as u8;
@@ -65,6 +62,9 @@ impl VarInt{
             }
         }
         buffer
+    }
+    pub fn to_bytes(&self) -> Vec<u8>{
+        Self::i32_to_bytes(self.0)
     }
 
 }
