@@ -8,7 +8,7 @@ pub struct McString{
     data: String,
 }
 impl McString{
-    pub fn from_bytes(data: &[u8]) -> Result<(Self), ParserError> {
+    pub fn from_bytes(data: &[u8]) -> Result<Self, ParserError> {
         let (len, varint_len) = match VarInt::from_bytes(&data[0..5]) {
             Ok(value) => value,
             Err(e) => return Err(e),
