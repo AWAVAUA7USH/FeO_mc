@@ -34,19 +34,9 @@ impl VarInt{
         self.0
     }
     pub fn from_bytes(data: &[u8]) -> Result<(Self, usize), ParserError>{
-        if data.len() > 5 {
-        return Err(ParserError::BufferTooLong);
-        }
-        let mut result: i32 = 0;
-        let mut shift: u32 = 0;
-        for (i,&byte) in data.iter().enumerate(){
-            result |= ((byte & 0b0111_1111) as i32) << shift;
-            shift += 7;
-            if byte & 0x80 == 0 {
-                return Ok((VarInt(result), i+1))
-            }
-        }
-        return Err(ParserError::BufferTooShort);
+        let (value, size) = Self::bytes_to_i32(data);
+        let value_varint = Self::from_i32(value);
+        Ok((value_varint, size))
     }
     pub fn bytes_to_i32(data: &[u8]) -> Result<(i32, usize), ParserError>{
         if data.len() > 5 {
