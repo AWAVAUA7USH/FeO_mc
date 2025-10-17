@@ -35,8 +35,8 @@ impl VarInt{
     }
     pub fn from_bytes(data: &[u8]) -> Result<(Self, usize), ParserError>{
         let (value, size) = match Self::bytes_to_i32(data){
-            Ok(value) => value;
-            Err(e) => return Err(e)
+            Ok(value) => value,
+            Err(e) => return Err(e),
         };
         let value_varint = Self::from_i32(value);
         Ok((value_varint, size))
