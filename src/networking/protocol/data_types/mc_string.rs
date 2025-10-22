@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, Mul, Div};
 use std::string;
-use super::super::errors::ParserError;
+use super::errors::ParserError;
 use super::varint::VarInt;
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Clone)]
 pub struct McString{
@@ -16,7 +16,7 @@ impl McString{
         let str_data = data[varint_len..].to_vec();
         Ok(
             Self{
-                len: len.to_i32(),
+                len: len.0,
                 data: match String::from_utf8(str_data) {
                     Ok(value) => value,
                     Err(e) => return Err(ParserError::StringParsingFailed),
