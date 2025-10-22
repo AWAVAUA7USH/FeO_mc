@@ -3,6 +3,11 @@ use crate::networking::protocol::data_types::errors::*;
 use crate::networking::protocol::data_types::traits::*;
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Clone)]
 pub struct VarInt(i32);
+impl Construct<i32> for VarInt {
+    fn new(data: i32) -> Self {
+        Self(data)
+    }
+}
 impl GetValue for VarInt {
     type Output = i32;
     fn value(&self) -> i32 {

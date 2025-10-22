@@ -11,3 +11,7 @@ pub trait GetValue {
     type Output;
     fn value(&self) -> Self::Output;
 }
+
+pub trait Construct<T> {
+    fn new(data: T) -> Self;
+}
